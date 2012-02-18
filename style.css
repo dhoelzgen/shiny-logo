@@ -1,12 +1,12 @@
 body {
-  background-image: url(/img/background.png);
+  background-image: url(img/background.png);
   margin: 0;
   padding: 0; }
 
 .container {
   margin: 0;
   padding-top: 120px;
-  background-image: url(/img/glow.png);
+  background-image: url(img/glow.png);
   background-position: center top;
   background-repeat: no-repeat;
   min-height: 400px;
