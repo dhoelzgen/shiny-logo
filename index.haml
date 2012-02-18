@@ -1,0 +1,15 @@
+!!!
+%html
+  %head
+    %title 9elements - ShinyLogo
+    %link{:rel => 'stylesheet', :href => '/style.css', :type => 'text/css'}
+    %script{:src => 'http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js', :type => 'text/javascript'}
+    %script{:src => '/shine.js', :type => 'text/javascript'}
+  %body
+    .container
+      %canvas#shinylogo{:width => 148, :height => 42}    
+
+    .static
+      %img#logo{:src => "/img/logo.png"}
+      %img#logo-shine{:src => '/img/logo_shine.png'}
+      %canvas#canvas-shine{:width => 250, :height => 250}
