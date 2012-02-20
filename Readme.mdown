@@ -1,0 +1,62 @@
+# Focus on detail
+
+At [9elements](http://9elements.com), we love those little details in design, shiny things, often not directly grabbing the user's attention but contributing well to the overall impression. Recently, our designer [Pad Schneider](http://twitter.com/padschneider) had the idea to make a metal-looked logo a bit more shiny, adding a subtle, slow moving blaze to it. You can see it in action [here](http://dhoelzgen.github.com/shiny-logo), and for those who are interested in how to built an effect like this with just a few lines of code, please move on to the next section.
+
+## Basic idea
+
+To add the blaze effect, in addition to the actual logo a radial shine image is added to a hidden section of the website. A small piece of CoffeeScript is used to draw the logo to a canvas, using the radial shine image to highlight some parts of it. To get the effect of a subtle moving blaze, the process starts over again with the radial shine being slowly rotated.
+
+## The code
+
+It is really simple to implement this idea - HTML Canvas gives you all the tools you need. In the code below, a hidden second canvas element is used to get the image data of a rotated shiny image, since the easiest way to get this is to simply draw this image to a canvas with a rotated context.
+
+    $(window).load ->
+      canvas   = $('canvas#shinylogo')
+      context  = canvas.get(0).getContext('2d')
+      
+      cvShine  = $('canvas#canvas-shine')
+      shine    = cvShine.get(0).getContext('2d')
+      
+      eLogo    = $('img#logo').get(0)
+      eShine   = $('img#logo-shine').get(0)
+      
+      width    = eLogo.width
+      height   = eLogo.height
+      
+      sWidth   = eShine.width
+      sHeight  = eShine.height
+
+As soon as all images on the site are loaded, the variables to have the elements and image dimensions at hand are initialized. After this step, the actual logo is drawn on the canvas to get the image data needed for the calculations.
+
+      context.drawImage(eLogo, 0, 0, width, height)
+      dataLogo = context.getImageData(0, 0, width, height)
+      dataNext = context.getImageData(0, 0, width, height)
+
+To finish initializing, the context of the hidden canvas is centered, since this is the anchor point used for rotation.
+
+      shine.translate(sWidth / 2, sHeight / 2)
+
+The following function first clears the canvas, then rotates the context of the hidden canvas and draws the radial shiny image to it, which is used to get the image data for our calculations. The image data object is a simple array, containing the rgba values of each pixel, so some calculations are necessary to get the corresponding pixels in both images. Think of it as the logo is placed centered above the shiny image and moved slightly to the top. Pixel by pixel, a fraction of the shiny images alpha values is now added to the rgb values of the logo. Finally, the modified image data is drawn on the canvas.
+
+      redraw = ->
+        shine.clearRect(- sWidth / 2, - sHeight / 2, sWidth, sHeight)
+        shine.rotate(0.02)
+        shine.drawImage(eShine, - sWidth / 2, - sHeight / 2, sWidth, sHeight)
+        
+        dataShine = shine.getImageData(0, 0, sWidth, sHeight)
+
+        offset = ((sWidth / 2 - width / 2) + (sHeight / 2 - height / 2 - 20) * sWidth) * 4
+
+        for w in [0..width]
+          for h in [0..height]
+            pixelPosition = (h * width + w) * 4
+            shinePosition = offset + (h * sWidth + w) * 4
+            dataNext.data[pixelPosition + i] = dataLogo.data[pixelPosition + i] + dataShine.data[shinePosition + 3] * 0.3 for i in [0..2]
+
+        context.putImageData(dataNext, 0, 0)
+
+The redraw function is called every 66 milliseconds. This would be a little bit to slow for a real animation, but due to the subtle nature of the effect nobody will notice, and it saves some CPU time for all the other cool things the actual website does.
+
+      window.setInterval ->
+        redraw()
+      , 66
