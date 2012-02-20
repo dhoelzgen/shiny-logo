@@ -12,5 +12,24 @@ body {
   min-height: 400px;
   text-align: center; }
 
+.info {
+  position: absolute;
+  bottom: 72px;
+  right: 0px;
+  padding: 12px;
+  font-family: "Wellfleet", cursive;
+  font-size: 12px;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.4); }
+  .info a {
+    color: #33ccff;
+    text-decoration: none;
+    transition: color 0.2s ease-in;
+    -webkit-transition: color 0.2s ease-in;
+    -moz-transition: color 0.2s ease-in;
+    -o-transition: color 0.2s ease-in; }
+  .info a:hover {
+    color: #89e2ff; }
+
 .static {
   display: none; }

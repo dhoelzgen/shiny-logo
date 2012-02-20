@@ -3,11 +3,22 @@
   %head
     %title 9elements - ShinyLogo
     %link{:rel => 'stylesheet', :href => 'style.css', :type => 'text/css'}
+    %link{:rel => 'stylesheet', :href => 'http://fonts.googleapis.com/css?family=Wellfleet', :type => 'text/css'}
     %script{:src => 'http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js', :type => 'text/javascript'}
     %script{:src => 'shine.js', :type => 'text/javascript'}
   %body
     .container
       %canvas#shinylogo{:width => 148, :height => 42}    
+
+    .info
+      Crafted by 
+      %a{:href => "http://twitter.com/padschneider"}@padschneider
+      and
+      %a{:href => "http://twitter.com/dhoelzgen"}@dhoelzgen
+      from
+      %a{:href => "http://9elements.com"}9elements
+      \- Available on 
+      %a{:href => "http://github.com/dhoelzgen/shiny-logo"}GitHub
 
     .static
       %img#logo{:src => "img/logo.png"}
